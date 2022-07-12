@@ -11,7 +11,7 @@ export const instance =  axios.create({
 
 export const searchAPI={
     getSearchId(text = "javascript") {
-        return instance.get(`vacancies?text=${text}&per_page=10`
+        return instance.get(`vacancies?text=${text}&only_with_salary=true&per_page=25`
         ).then(response => response.data)
     },
 }

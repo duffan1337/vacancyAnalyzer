@@ -5,10 +5,16 @@ const initialState={
     items: [],
     totalCount: 20,
     openItems: [],
+    initialized:false,
 
     between1And3Experience:[],
     between3And6Experience:[],
-    noExperience:[]
+    noExperience:[],
+
+    top10Skills:[],
+    Experience:[],
+    Employment:[],
+    ExperienceBySalary:[],
 }
 
 // const getCurrentVacancy = (message)=>{
@@ -32,6 +38,7 @@ const initialState={
 // }
 
 const vacancy =  (state = initialState, action)=>{
+    debugger
     console.log("payload", action.payload)
     if(action.type ==="ADD_ALL_VACANCY")
     {
@@ -54,11 +61,12 @@ const vacancy =  (state = initialState, action)=>{
     }
     else if(action.type ==="ADD_OPEN_VACANCY")
     {
-      
+      debugger
         console.log("openItems",state.openItems)
         return {
             ...state,
             openItems:  [...state.openItems, action.payload],
+            initialized: state.openItems.length===state.items.length-1 ? true : false
             //action.payload.items.map(async(el)=>{ 
             //    let ttt;
             //      await getCurrentVacancy(el.id).then(data=>ttt=data)
@@ -74,8 +82,37 @@ const vacancy =  (state = initialState, action)=>{
             ...state,
             between1And3Experience: state.openItems.filter( el=>el.experience.id==="between1And3"),
             between3And6Experience: state.openItems.filter( el=>el.experience.id==="between3And6"),
-            noExperience: state.openItems.filter( el=>el.experience.id==="noExperience")
+            noExperience: state.openItems.filter( el=>el.experience.id==="noExperience"),
             
+            
+        }
+    }
+    else if(action.type ==="SET_TOP_SKILLS")
+    {
+        return{
+            ...state,
+            top10Skills:action.payload
+        }
+    }
+    else if(action.type ==="SET_EXPERIENCE")
+    {
+        return{
+            ...state,
+            Experience:action.payload
+        }
+    }
+    else if(action.type ==="SET_EMPLOYMENT")
+    {
+        return{
+            ...state,
+            Employment:action.payload
+        }
+    }
+    else if(action.type ==="SET_EXPERIENCE_BY_SALARY")
+    {
+        return{
+            ...state,
+            ExperienceBySalary:action.payload
         }
     }
     return state
