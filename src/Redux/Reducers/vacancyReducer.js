@@ -15,27 +15,97 @@ const initialState={
     Experience:[],
     Employment:[],
     ExperienceBySalary:[],
+    Salary:{ }
 }
 
-// const getCurrentVacancy = (message)=>{
-//     return  getVacancyByIdAPI.getCurrentVacancy(message).then((response) => {
-//         let j = response
-//         console.log(j)
-//         return j
-//     })
-// }
+const getSalaryStat = (salary)=>{
+   const min = Math.min(...salary)
+   const max = Math.max(...salary)
+   const middle = Math.trunc(salary.reduce((a, b) => (a + b)) / salary.length);
+   return {
+    max:max,
+    min:min,
+    middle:middle
+    }
+}
 
-// const getOpenItems = async (items)=>{
-//    let newItems = await Promise.all(items.map(async(el)=>{ 
-//         let ttt;
-//           await getCurrentVacancy(el.id).then(data=>ttt=data)
-//           //console.log("ttt", ttt)
-//           return ttt
-//      }))
-//      console.log("newItems",newItems)
-//      return newItems
+const setEmployment = (items) =>{
+    let arrayOfEmployment = items.map(item =>{
+      return item.schedule
+    })
+
+    let EmploymentStat={remote:0, fullDay:0,flexible:0}
+ 
+    for (let x in arrayOfEmployment) {
+      if(arrayOfEmployment[x].id ==="remote")
+      {
+        EmploymentStat= {...EmploymentStat, remote: EmploymentStat.remote+=1}
+      }
+      else if(arrayOfEmployment[x].id ==="fullDay")
+      {
+        EmploymentStat= {...EmploymentStat, fullDay: EmploymentStat.fullDay+=1}
+      } 
+      else if(arrayOfEmployment[x].id ==="flexible")
+      {
+        EmploymentStat= {...EmploymentStat, flexible: EmploymentStat.fullDay+=1}
+      } 
+    }
+    console.log("Employment stat", EmploymentStat)
+    return EmploymentStat
+  }
+
+  const setExperience = (items) =>{
+    let arrayOfExperience = items.map(item =>{
+      return item.experience.id
+    })
+
+    let ExperienceStat={between1And3:0, between3And6:0,noExperience:0, moreThan6:0}
+ 
+    for (let x in arrayOfExperience) {
+      if(arrayOfExperience[x] ==="between1And3")
+      {
+        ExperienceStat= {...ExperienceStat, between1And3: ExperienceStat.between1And3+=1}
+      }
+      else if(arrayOfExperience[x] ==="between3And6")
+      {
+        ExperienceStat= {...ExperienceStat, between3And6: ExperienceStat.between3And6+=1}
+      }
+      else if(arrayOfExperience[x] ==="noExperience")
+      {
+        ExperienceStat= {...ExperienceStat, noExperience: ExperienceStat.noExperience+=1}
+      }
+      else if(arrayOfExperience[x] ==="moreThan6")
+      {
+        ExperienceStat= {...ExperienceStat, moreThan6: ExperienceStat.noExperience+=1}
+      }
      
-// }
+    }
+    return ExperienceStat
+  }
+
+
+  const setKeySkills = (items) =>{
+    let keySkillsStats={items:[]}
+    Array.from(items, el=>Array.from(el.key_skills, (item) =>{keySkillsStats = {...keySkillsStats, items: [...keySkillsStats.items,item.name]}}))
+
+    let map = keySkillsStats.items.reduce(function(prev, cur) {
+      prev[cur] = (prev[cur] || 0) + 1;
+      return prev;
+    }, {});
+    
+    var sortable = [];
+    for (var count in map) {
+        sortable.push([count, map[count]]);
+    }
+    
+    let top = sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    let top10Skills = top.slice(0,10)
+    
+   return top10Skills   
+  }
+
 
 const vacancy =  (state = initialState, action)=>{
     debugger
@@ -115,17 +185,37 @@ const vacancy =  (state = initialState, action)=>{
             ExperienceBySalary:action.payload
         }
     }
+    else if(action.type ==="SET_ALL_DATA")      //Сделать логику
+    {
+        return{
+            ...state,
+            ExperienceBySalary:action.payload
+        }
+    }
+    else if(action.type ==="SET_SALARY")      //Сделать логику
+    {
+
+        return{
+            ...state,
+            Salary: getSalaryStat(action.payload)
+        }
+    }
+    else if(action.type ==="SET_DATA")      //Сделать логику
+    {
+        const items = state.openItems
+
+        return{
+            ...state,
+            Salary: getSalaryStat(action.payload),
+            Employment: setEmployment(items),
+            Experience: setExperience(items),
+            top10Skills: setKeySkills(items)
+        }
+    }
     return state
 }
 
 
-// export const getCurrentVacancy = (message)=>{          //получает элемент, делает запрос 
-//     return  getVacancyByIdAPI.getCurrentVacancy(message).then((response) => {
-//         let j = response
-//         console.log(j)
-//         return j
-//     })
-//   } 
 
 export const getOpenVacancies=(vacancyItems)=>async(dispatch)=>
 {
@@ -138,13 +228,5 @@ export const getOpenVacancies=(vacancyItems)=>async(dispatch)=>
   for (const item of vacancyItems.items) {
      await dispatch(getCurrentVacancy(item.id));
   }
-    // vacancyItems.items.forEach( function(el, index, array) {
-    //    dispatch(getCurrentVacancy(el.id))
-    // });
-        // let response = await profileAPI.savePhoto(file)
-        //     if(response.data.resultCode===0)
-        //     {
-        //     dispatch(savePhotoSuccess(response.data.data.photos))
-        //     }
 }
 export default vacancy

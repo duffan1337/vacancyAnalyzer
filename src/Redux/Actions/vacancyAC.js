@@ -29,3 +29,7 @@ export const addExperienceBySalary = (payload)=>({
     type:'SET_EXPERIENCE_BY_SALARY',
     payload
 })
+export const addSalary = (payload)=>({
+    type:'SET_SALARY',
+    payload
+})

@@ -1,25 +1,16 @@
 
 import React from 'react';
 import './App.css'
-import { getVacancyByIdAPI, searchAPI } from './api/api';
+import { getCurrency, getVacancyByIdAPI, searchAPI } from './api/api';
 import { useDispatch,useSelector } from 'react-redux';
-import { addAllVacancy, addTopSkills, addVacancyById, sortVacancy,addExperience, addEmployment, addExperienceBySalary} from './Redux/Actions/vacancyAC';
+import { addAllVacancy, addTopSkills, addVacancyById, sortVacancy,addExperience, addEmployment, addExperienceBySalary, addSalary} from './Redux/Actions/vacancyAC';
 import { useState } from 'react';
 import { getOpenVacancies } from './Redux/Reducers/vacancyReducer';
-// import {Bar} from 'react-chartjs-2'
-// import {Chart as ChartJS} from "chart.js/auto"
 import { Search } from './Components/Search';
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { SkillsChart } from './Components/Charts/SkillsChart/SkillsChart';
+import { ExperienceChart } from './Components/Charts/ExperienceChart/experinceChart';
+import { EmploymentChart } from './Components/Charts/EmploymentChart/employmentChart';
+import { ExperienceBySalaryChart } from './Components/Charts/ExperienceBySalaryChart/experienceBySalaryChart';
 
 
 
@@ -76,6 +67,26 @@ function App() {
       keySkills:state.vacancy.top10Skills
     };
   });
+  const {experince}=useSelector((state)=>{
+    return{
+      experince:state.vacancy.Experience
+    };
+  });
+  const {employment}=useSelector((state)=>{
+    return{
+      employment:state.vacancy.Employment
+    };
+  });
+  const {salary}=useSelector((state)=>{
+    return{
+      salary:state.vacancy.Salary
+    };
+  });
+  const {experienceBySalary}=useSelector((state)=>{
+    return{
+      experienceBySalary:state.vacancy.ExperienceBySalary
+    };
+  });
 
   
   const {Initialized}=useSelector((state)=>{
@@ -88,27 +99,87 @@ function App() {
     dispatch(sortAllVacancies());
   }, [vacancyItems]);               //КОСТЫЛЬ НУЖНО ИСПРАВИТЬ
 
+  React.useEffect(()=>{
+    ( getCurrency.getCurrencyValues().then(response =>{ 
+      setCurrencies(response.conversion_rates)
+    }))
+  },[])
+
+
   const dispatch = useDispatch();
-  const [message, setMessage] = useState("");
-  const [topSkills, setTopSkills] = useState({});
-  //const [Experience, setExperience] = useState({});
+ 
+  const [currencies, setCurrencies] = useState({});
 
 
 
   
-  const getSalary = () =>{
-      let from = vacancyItems.map(item => 
-        {         
-            return item.salary.from
-      })
-           
-      let to = vacancyItems.map(item => 
-        {
-              return item.salary.to
-         })
+  const getSalary = (Vacancy) =>{
+   
+    let arr = {
+      KZT:currencies.KZT,
+      RUR:currencies.RUB,
+      BYR:currencies.BYN,
+      USD:currencies.USD,
+      EUR:currencies.EUR,
+      UAH:currencies.UAH,
+    }  
 
-      return {from:from, to:to}
+    console.log("arrtewegshshe",arr)
+    let filterFrom = Vacancy.filter(el => el.salary.from !== null )
+      let from = filterFrom.map(item => 
+        {      
+          console.log("FFFFFFFFFFFFFFf", currencies)
+          debugger   
+          console.log("YYYYY",item.salary.from)
+          if(item.salary.currency !== "USD")
+          {
+            let el;
+            debugger
+            for (var currency in arr) 
+            {
+             debugger
+
+             if(currency===item.salary.currency)
+             {
+             el =Math.trunc((item.salary.from)/arr[currency])
+             console.log("ELLLLL",item.salary)
+             }
+             
+            }
+            return el
+      }
+      else
+      {
+        return item.salary.from
+      }
+    })
+           
+    let filterTo = Vacancy.filter(el => el.salary.to !== null )
+    let to = filterTo.map(item => 
+      {         
+        if(item.salary.currency !== "USD")
+        {
+          let el;
+          console.log("CC",currencies)
+          for (var currency in arr) 
+          {
+           if(currency===item.salary.currency)
+           {
+            console.log(currency)
+           el=Math.trunc(item.salary.to / arr[currency])
+           }
+           
+        }
+          return el
     }
+    else{
+      return  item.salary.to 
+    }
+  })
+
+  console.log("FFFFTTT",from,to)
+      return {from:from, to:to}
+}
 
   const sortSalary = (salary, param) =>{
     const sortedAsc = salary[param].sort((a, b) => {
@@ -131,18 +202,19 @@ function App() {
   
   
   const setSalary = () =>{
-    var salary=getSalary()
+    var salary=getSalary(vacancyItems)
     var sortedSalaryFrom = sortSalary(salary,"from")
     var sortedSalaryTo = sortSalary(salary,"to")
     var ContactArray  = sortedSalaryFrom.concat(sortedSalaryTo);
-    console.log("Contact",ContactArray)
-    console.log("from", sortedSalaryFrom)
-    console.log("to", sortedSalaryTo)
+    let ar = ContactArray.filter(contact => contact !== null )
+    console.log("arrrrrrrrrrrrrrrrrrrrr",ar)
+   return ar
+
   }
   //"moreThan6"
 
   const setExperience = () =>{
-    var arrayOfExperience = vacancyItems.map(item =>{
+    let arrayOfExperience = vacancyItems.map(item =>{
       return item.experience.id
     })
 
@@ -163,35 +235,41 @@ function App() {
       }
       else if(arrayOfExperience[x] ==="moreThan6")
       {
-        ExperienceStat= {...ExperienceStat, moreThan6: ExperienceStat.noExperience+=1}
+        ExperienceStat= {...ExperienceStat, moreThan6: ExperienceStat.moreThan6+=1}
       }
      
     }
+
     console.log("Experience stat", ExperienceStat)
     return ExperienceStat
     
   }
 
   const setEmployment = () =>{
-    var arrayOfEmployment = vacancyItems.map(item =>{
-      return item.employment
+    let arrayOfEmployment = vacancyItems.map(item =>{
+      return item.schedule
     })
 
-    let EmploymentStat={full:0, part:0,}
+    let EmploymentStat={remote:0, fullDay:0,flexible:0}
  
     for (let x in arrayOfEmployment) {
-      if(arrayOfEmployment[x].id ==="full")
+      if(arrayOfEmployment[x].id ==="remote")
       {
-        EmploymentStat= {...EmploymentStat, full: EmploymentStat.full+=1}
+        EmploymentStat= {...EmploymentStat, remote: EmploymentStat.remote+=1}
       }
-      else if(arrayOfEmployment[x].id ==="part")
+      else if(arrayOfEmployment[x].id ==="fullDay")
       {
-        EmploymentStat= {...EmploymentStat, "part": EmploymentStat.part+=1}
+        EmploymentStat= {...EmploymentStat, fullDay: EmploymentStat.fullDay+=1}
+      } 
+      else if(arrayOfEmployment[x].id ==="flexible")
+      {
+        EmploymentStat= {...EmploymentStat, flexible: EmploymentStat.flexible+=1}
       } 
     }
     console.log("Employment stat", EmploymentStat)
     return EmploymentStat
   }
+
 
   const setExperienceAndSalary = () =>{
     let ExperienceBySalary={between1And3:[], between3And6:[],noExperience:[], moreThan6:[]}
@@ -199,27 +277,42 @@ function App() {
         for (let x in vacancyItems) {
           if(vacancyItems[x].experience.id ==="between1And3")
           {
-            ExperienceBySalary= {...ExperienceBySalary, between1And3: [...ExperienceBySalary.between1And3, vacancyItems[x].salary]}
+            ExperienceBySalary= {...ExperienceBySalary, between1And3: [...ExperienceBySalary.between1And3, vacancyItems[x]]}
           }
           else if(vacancyItems[x].experience.id ==="between3And6")
           {
-            ExperienceBySalary= {...ExperienceBySalary, between3And6: [...ExperienceBySalary.between3And6, vacancyItems[x].salary]}
+            ExperienceBySalary= {...ExperienceBySalary, between3And6: [...ExperienceBySalary.between3And6, vacancyItems[x]]}
           }
           else if(vacancyItems[x].experience.id ==="noExperience")
           {
-            ExperienceBySalary= {...ExperienceBySalary, noExperience: [...ExperienceBySalary.noExperience, vacancyItems[x].salary]}
+            ExperienceBySalary= {...ExperienceBySalary, noExperience: [...ExperienceBySalary.noExperience, vacancyItems[x]]}
           }
           else if(vacancyItems[x].experience.id ==="moreThan6")
           {
-            ExperienceBySalary= {...ExperienceBySalary, moreThan6: [...ExperienceBySalary.moreThan6, vacancyItems[x].salary]}
+            ExperienceBySalary= {...ExperienceBySalary, moreThan6: [...ExperienceBySalary.moreThan6, vacancyItems[x]]}
           }
         }
-        console.log("experience!!!!!", ExperienceBySalary)
-        return ExperienceBySalary
+
+      
+          let between1And3 =getSalary(ExperienceBySalary.between1And3)
+          let between3And6=getSalary(ExperienceBySalary.between3And6)
+          let noExperience = getSalary(ExperienceBySalary.noExperience)
+          let moreThan6 =getSalary(ExperienceBySalary.moreThan6)
+          let AVGbetween1And3= getAvg(between1And3.from.concat(between1And3.to))
+           let AVGbetween3And6= getAvg(between3And6.from.concat(between3And6.to))
+           let AVGnoExperience= getAvg(noExperience.from.concat(noExperience.to))
+           let AVGmoreThan6= getAvg(moreThan6.from.concat(moreThan6.to))
+        
+        console.log("experience!!!!!", AVGbetween1And3, AVGbetween3And6, AVGnoExperience, AVGmoreThan6)
+        return {AVGnoExperience, AVGbetween1And3, AVGbetween3And6, AVGmoreThan6} 
         
   }
  
 
+  function getAvg(grades) {
+    const total = grades.reduce((acc, c) => acc + c, 0);
+    return Math.trunc(total / grades.length);
+  }
   const setKeySkills = () =>{
     let keySkillsStats={items:[]}
     Array.from(vacancyItems, el=>Array.from(el.key_skills, (item) =>{keySkillsStats = {...keySkillsStats, items: [...keySkillsStats.items,item.name]}}))
@@ -254,6 +347,7 @@ function App() {
     dispatch(addExperience(setExperience()))
     dispatch(addEmployment(setEmployment()))
     dispatch(addExperienceBySalary(setExperienceAndSalary()))
+    dispatch(addSalary(setSalary()))
   }
 
 
@@ -270,15 +364,6 @@ function App() {
  
     return(
       <div className="App">
-        {/* <header className="App-header">
-       <input className="searchInput" 
-        type="text"
-        value={message}
-        placeholder="Введите сообщение"
-        onChange={(e) => setMessage(e.target.value)}></input>
-       <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(message))
-        }}>send</button>
-      </header> */}
       <Search dispatch={dispatch} getAllVacancies={getAllVacancies}/>
       </div>
     )
@@ -286,64 +371,24 @@ function App() {
   }
   else      //В USESTATE
   {
-    setSalary()
-
-
-    ChartJS.register(
-      CategoryScale,
-      LinearScale,
-      BarElement,
-      Title,
-      Tooltip,
-      Legend
-    );
-    
-     const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top' ,
-        },
-        title: {
-          display: true,
-          text: 'Chart.js Bar Chart',
-        },
-      },
-    };
-    
-    const labels = keySkills.map(el=>el[0]);
-    console.log("KKKKKKKKKKK",keySkills)
-     const data = {
-      labels,
-      datasets: [
-        {
-          //label: 'Навыки',
-          data: keySkills.map(el=>el[1]),
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-      ],
-    };
+   
    
   return (
     <div className="App">
-      {/* <header className="App-header">
-       <input className="searchInput" 
-        type="text"
-        value={message}
-        placeholder="Введите сообщение"
-        onChange={(e) => setMessage(e.target.value)}></input>
-       <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(message))
-        }}>send</button>
-      </header> */}
        <Search dispatch={dispatch} getAllVacancies={getAllVacancies}/>
       <body className="App-body">
         <button onClick={handleSetClick}>Установить данные</button>
       <div>Количество вакансий {Items.length}</div>
+      <div className="salary">
+        <div> Минимальная зарплата  {salary.min}</div>
+        <div> Средняя зарплата  {salary.middle}</div>
+        <div> Максимальная зарплата {salary.max}</div> */
+      </div>
       
-      {/* <div>fromFrom зп {sortedSalaryFrom}</div>
-      <div>To зп {sortedSalaryTo}</div> */}
-      {Items ? Items.map((el)=><div>{el.name}</div>):"1"}
-      <Bar  data={data} />;
+      <SkillsChart keySkills={keySkills}/>
+      <ExperienceChart experience={experince}/>
+      <EmploymentChart employment={employment}/>
+      <ExperienceBySalaryChart experienceBySalary ={experienceBySalary}/>
       
       </body>
     </div>  

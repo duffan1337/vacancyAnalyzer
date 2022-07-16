@@ -11,7 +11,7 @@ export const instance =  axios.create({
 
 export const searchAPI={
     getSearchId(text = "javascript") {
-        return instance.get(`vacancies?text=${text}&only_with_salary=true&per_page=25`
+        return instance.get(`vacancies?text=${text}&only_with_salary=true&per_page=5&area=1`
         ).then(response => response.data)
     },
 }
@@ -21,6 +21,11 @@ export const getVacancyByIdAPI={
         return instance.get(`vacancies/${id}`
         ).then(response =>response.data)
     },
-    
+}
+
+export const getCurrency={
+    getCurrencyValues(){
+        return axios.get("https://v6.exchangerate-api.com/v6/4f44d7ad6be4d970e8ecc92e/latest/USD/").then(response => response.data);
+    }
 }
 
