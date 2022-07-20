@@ -12,7 +12,6 @@ export const sortVacancy = ()=>({
     type:'SET_SORT_VACANCY',
     
 })
-
 export const addTopSkills = (payload)=>({
     type:'SET_TOP_SKILLS',
     payload
@@ -31,5 +30,9 @@ export const addExperienceBySalary = (payload)=>({
 })
 export const addSalary = (payload)=>({
     type:'SET_SALARY',
+    payload
+})
+export const addAllData = (payload)=>({
+    type:'SET_ALL_DATA',
     payload
 })

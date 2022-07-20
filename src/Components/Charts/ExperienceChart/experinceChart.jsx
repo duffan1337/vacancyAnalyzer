@@ -35,6 +35,7 @@ export const ExperienceChart = ({experience})=>{
 
   return ( 
   <div className="experienceChart">
+    <p>Опыт работы</p>
     <Pie data={data} />
   </div> )
 }

@@ -3,13 +3,9 @@ import { addVacancyById } from "../Actions/vacancyAC";
 
 const initialState={
     items: [],
-    totalCount: 20,
     openItems: [],
     initialized:false,
-
-    between1And3Experience:[],
-    between3And6Experience:[],
-    noExperience:[],
+    isLoaded:false,
 
     top10Skills:[],
     Experience:[],
@@ -18,16 +14,22 @@ const initialState={
     Salary:{ }
 }
 
-const getSalaryStat = (salary)=>{
-   const min = Math.min(...salary)
-   const max = Math.max(...salary)
-   const middle = Math.trunc(salary.reduce((a, b) => (a + b)) / salary.length);
+const getSalaryStat = (vacancies, currencies)=>{
+  debugger
+    let salary = getSalary(vacancies,currencies)
+    let allSalary = salary.from.concat(salary.to)
+
+
+   const min = Math.min(...allSalary)
+   const max = Math.max(...allSalary)
+   const middle = Math.trunc(allSalary.reduce((a, b) => (a + b)) / allSalary.length);
    return {
     max:max,
     min:min,
     middle:middle
     }
 }
+
 
 const setEmployment = (items) =>{
     let arrayOfEmployment = items.map(item =>{
@@ -83,6 +85,7 @@ const setEmployment = (items) =>{
     return ExperienceStat
   }
 
+  
 
   const setKeySkills = (items) =>{
     let keySkillsStats={items:[]}
@@ -106,6 +109,117 @@ const setEmployment = (items) =>{
    return top10Skills   
   }
 
+  
+  const setExperienceAndSalary = (vacancyItems,currencies) =>{
+    let ExperienceBySalary={between1And3:[], between3And6:[],noExperience:[], moreThan6:[]}
+ 
+        for (let x in vacancyItems) {
+          if(vacancyItems[x].experience.id ==="between1And3")
+          {
+            ExperienceBySalary= {...ExperienceBySalary, between1And3: [...ExperienceBySalary.between1And3, vacancyItems[x]]}
+          }
+          else if(vacancyItems[x].experience.id ==="between3And6")
+          {
+            ExperienceBySalary= {...ExperienceBySalary, between3And6: [...ExperienceBySalary.between3And6, vacancyItems[x]]}
+          }
+          else if(vacancyItems[x].experience.id ==="noExperience")
+          {
+            ExperienceBySalary= {...ExperienceBySalary, noExperience: [...ExperienceBySalary.noExperience, vacancyItems[x]]}
+          }
+          else if(vacancyItems[x].experience.id ==="moreThan6")
+          {
+            ExperienceBySalary= {...ExperienceBySalary, moreThan6: [...ExperienceBySalary.moreThan6, vacancyItems[x]]}
+          }
+        }
+
+      
+          let between1And3 =getSalary(ExperienceBySalary.between1And3,currencies)
+          let between3And6=getSalary(ExperienceBySalary.between3And6,currencies)
+          let noExperience = getSalary(ExperienceBySalary.noExperience,currencies)
+          let moreThan6 =getSalary(ExperienceBySalary.moreThan6,currencies)
+          let AVGbetween1And3= getAvg(between1And3.from.concat(between1And3.to))
+           let AVGbetween3And6= getAvg(between3And6.from.concat(between3And6.to))
+           let AVGnoExperience= getAvg(noExperience.from.concat(noExperience.to))
+           let AVGmoreThan6= getAvg(moreThan6.from.concat(moreThan6.to))
+        
+        console.log("experience!!!!!", AVGbetween1And3, AVGbetween3And6, AVGnoExperience, AVGmoreThan6)
+        return {AVGnoExperience, AVGbetween1And3, AVGbetween3And6, AVGmoreThan6} 
+        
+  }
+
+  const getSalary = (Vacancy,currencies) =>{
+    let arr = {
+      KZT:currencies.KZT,
+      RUR:currencies.RUB,
+      BYR:currencies.BYN,
+      USD:currencies.USD,
+      EUR:currencies.EUR,
+      UAH:currencies.UAH,
+    }  
+    console.log("arrtewegshshe",arr)
+    let filterFrom = Vacancy.filter(el => el.salary.from !== null )
+      let from = filterFrom.map(item => 
+        {      
+          console.log("FFFFFFFFFFFFFFf", currencies)
+          debugger   
+          console.log("YYYYY",item.salary.from)
+          if(item.salary.currency !== "USD")
+          {
+            let el;
+            debugger
+            for (var currency in arr) 
+            {
+             debugger
+
+             if(currency===item.salary.currency)
+             {
+             el =Math.trunc((item.salary.from)/arr[currency])
+             console.log("ELLLLL",item.salary)
+             }
+             
+            }
+            return el
+      }
+      else
+      {
+        return item.salary.from
+      }
+    })
+           
+    let filterTo = Vacancy.filter(el => el.salary.to !== null )
+    let to = filterTo.map(item => 
+      {         
+        if(item.salary.currency !== "USD")
+        {
+          let el;
+          console.log("CC",currencies)
+          for (var currency in arr) 
+          {
+           if(currency===item.salary.currency)
+           {
+            console.log(currency)
+           el=Math.trunc(item.salary.to / arr[currency])
+           }
+           
+        }
+          return el
+    }
+    else{
+      return  item.salary.to 
+    }
+  })
+
+  console.log("FFFFTTT",from,to)
+      return {from:from, to:to}
+}
+
+ 
+
+  function getAvg(grades) {
+    const total = grades.reduce((acc, c) => acc + c, 0);
+    return Math.trunc(total / grades.length);
+  }
+
 
 const vacancy =  (state = initialState, action)=>{
     debugger
@@ -115,18 +229,12 @@ const vacancy =  (state = initialState, action)=>{
         console.log("openItems",state.openItems)
         return {
             ...state,
+            isLoaded:true,
             items:action.payload.items,
             openItems: [],
             between1And3Experience:[],
             between3And6Experience:[],
-            noExperience:[]
-            
-            //action.payload.items.map(async(el)=>{ 
-            //    let ttt;
-            //      await getCurrentVacancy(el.id).then(data=>ttt=data)
-            //      console.log("ttt", ttt)
-            //      return ttt
-            // })
+            noExperience:[],
         };
     }
     else if(action.type ==="ADD_OPEN_VACANCY")
@@ -136,26 +244,10 @@ const vacancy =  (state = initialState, action)=>{
         return {
             ...state,
             openItems:  [...state.openItems, action.payload],
-            initialized: state.openItems.length===state.items.length-1 ? true : false
-            //action.payload.items.map(async(el)=>{ 
-            //    let ttt;
-            //      await getCurrentVacancy(el.id).then(data=>ttt=data)
-            //      console.log("ttt", ttt)
-            //      return ttt
-            // })
+            initialized: state.openItems.length===state.items.length-1 ? true : false,
+             isLoaded: state.openItems.length===state.items.length-1 ? false : true
+
         };
-    }
-    else if(action.type ==="SET_SORT_VACANCY")
-    {
-     
-        return{
-            ...state,
-            between1And3Experience: state.openItems.filter( el=>el.experience.id==="between1And3"),
-            between3And6Experience: state.openItems.filter( el=>el.experience.id==="between3And6"),
-            noExperience: state.openItems.filter( el=>el.experience.id==="noExperience"),
-            
-            
-        }
     }
     else if(action.type ==="SET_TOP_SKILLS")
     {
@@ -185,13 +277,6 @@ const vacancy =  (state = initialState, action)=>{
             ExperienceBySalary:action.payload
         }
     }
-    else if(action.type ==="SET_ALL_DATA")      //Сделать логику
-    {
-        return{
-            ...state,
-            ExperienceBySalary:action.payload
-        }
-    }
     else if(action.type ==="SET_SALARY")      //Сделать логику
     {
 
@@ -200,17 +285,21 @@ const vacancy =  (state = initialState, action)=>{
             Salary: getSalaryStat(action.payload)
         }
     }
-    else if(action.type ==="SET_DATA")      //Сделать логику
+    else if(action.type ==="SET_ALL_DATA")      //Сделать логику
     {
+      debugger
         const items = state.openItems
-
-        return{
-            ...state,
-            Salary: getSalaryStat(action.payload),
-            Employment: setEmployment(items),
-            Experience: setExperience(items),
-            top10Skills: setKeySkills(items)
-        }
+      let obj ={
+        ...state,
+        isLoaded:false,
+        Salary: getSalaryStat(items, action.payload.currencies),
+        Employment: setEmployment(items),
+        Experience: setExperience(items),
+        top10Skills: setKeySkills(items),
+        ExperienceBySalary: setExperienceAndSalary(items, action.payload.currencies)
+    }
+    debugger
+        return obj
     }
     return state
 }

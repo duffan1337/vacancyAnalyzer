@@ -1,4 +1,12 @@
 .employmentChart{
-    width:250px;
-    height:250px;
+    width:400px;
+    height:400px;
+    float:right;
+    margin-right: 50px;
+}
+
+.employmentChart p{
+    font-weight:bold;
+    font-size: 13px;
+    color: rgb(101, 101, 101);
 }

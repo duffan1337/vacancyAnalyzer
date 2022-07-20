@@ -1,4 +1,5 @@
 import React from 'react';
+import "./experienceBySalaryChart.css"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +14,7 @@ import { Bar } from 'react-chartjs-2';
 
 
 export function ExperienceBySalaryChart({experienceBySalary}) {
-console.log("AAAAAAAA")
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -24,6 +25,12 @@ console.log("AAAAAAAA")
   );
   
    const options = {
+    indexAxis: 'y',
+    elements: {
+      bar: {
+        borderWidth: 2,
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
@@ -31,7 +38,7 @@ console.log("AAAAAAAA")
       },
       title: {
         display: true,
-        text: 'Chart.js Bar Chart',
+        text: 'Зарплата',
       },
     },
   };
@@ -42,9 +49,10 @@ console.log("AAAAAAAA")
     labels,
     datasets: [
       {
-        label: 'Зарплаты',
+        label: 'Зарплата',
         data: [experienceBySalary.AVGnoExperience,experienceBySalary.AVGbetween1And3,experienceBySalary.AVGbetween3And6,experienceBySalary.AVGmoreThan6],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(30, 20, 200)',
+        backgroundColor: 'rgba(30, 20, 200, 0.7)',
       },
   
     ],

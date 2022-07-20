@@ -33,8 +33,10 @@ export const EmploymentChart = ({employment})=>{
   ],
 };
 
+
   return ( 
   <div className="employmentChart">
+    <p>График работы</p>
     <Pie data={data} />
   </div> )
 }

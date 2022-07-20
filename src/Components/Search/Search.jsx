@@ -1,4 +1,5 @@
 import React from "react"
+import './Search.css'
 import { useState } from "react";
 
 export const Search =({dispatch,getAllVacancies})=>{
@@ -10,10 +11,10 @@ export const Search =({dispatch,getAllVacancies})=>{
         <input className="searchInput" 
          type="text"
          value={message}
-         placeholder="Введите сообщение"
+         placeholder="Введите название вакансии"
          onChange={(e) => setMessage(e.target.value)}></input>
         <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(message))
-         }}>send</button>
+         }}>Отправить</button>
        </header>
     )
 }
