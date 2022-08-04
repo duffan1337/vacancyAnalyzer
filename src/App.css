@@ -93,22 +93,31 @@
 
   @media screen and (min-width: 0px) and  (max-width:810px) {
     .PieCharts{
-      display: inline-block;
+      display: flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction: column-reverse
+
+    }
+  }
+  @media screen and (min-width: 810px)  {
+    .PieCharts{
+      display:flex;
+      justify-content: center;
+
+
     }
   }
 
-  @media screen and (min-width: 0px) and  (max-width:810px) {
-    .PieCharts{
-      display: inline-block;
-    }
-  }
+
+
   @media screen and (min-width: 1650px) and  (max-width:2250px) {
     .DiagramCharts{
       width: 1000px;
       display: inline-block;
     }
   }
-
+ 
   
   
   

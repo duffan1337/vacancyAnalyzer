@@ -21,7 +21,7 @@
 
   @media screen and (min-width: 360px) and  (max-width:510px) {
     .salaryByExperienceChart{
-        width:350px;
-        height:350px;
+        width:370px;
+        height:250px;
     }
   }
