@@ -1,25 +1,26 @@
-.skillsChart{
+.salaryByExperienceChart{
     width:750px;
     height:400px;
-    /* float:left; */
+    /* float:right; */
+    
 }
 
 @media screen and (min-width: 0px) and  (max-width:1655px) {
-    .skillsChart{
+    .salaryByExperienceChart{
       
       margin: 0 auto;
     }
   }
 
   @media screen and (min-width: 0px) and  (max-width:760px) {
-    .skillsChart{
+    .salaryByExperienceChart{
         width:500px;
         height:300px;
     }
   }
 
   @media screen and (min-width: 360px) and  (max-width:510px) {
-    .skillsChart{
+    .salaryByExperienceChart{
         width:350px;
         height:350px;
     }

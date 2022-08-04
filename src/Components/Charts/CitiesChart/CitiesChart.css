@@ -1,25 +1,23 @@
-.skillsChart{
+.citiesChart{
     width:750px;
     height:400px;
-    /* float:left; */
 }
 
 @media screen and (min-width: 0px) and  (max-width:1655px) {
-    .skillsChart{
-      
+    .citiesChart{    
       margin: 0 auto;
     }
   }
 
   @media screen and (min-width: 0px) and  (max-width:760px) {
-    .skillsChart{
+    .citiesChart{
         width:500px;
         height:300px;
     }
   }
 
   @media screen and (min-width: 360px) and  (max-width:510px) {
-    .skillsChart{
+    .citiesChart{
         width:350px;
         height:350px;
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import './skillsChart.css'
+import './CitiesChart.css'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,7 +12,7 @@ import {
   import { Bar } from 'react-chartjs-2';
 
 
-export const SkillsChart = ({keySkills})=>{
+export const CitiesChart = ({cities})=>{
 
     ChartJS.register(
         CategoryScale,
@@ -37,19 +37,19 @@ export const SkillsChart = ({keySkills})=>{
           },
           title: {
             display: true,
-            text: 'Топ 10 навыков',
+            text: 'Топ 10 городов',
           },
         },
       };
       
-      const labels = keySkills.map(el=>el[0]);
+      const labels = cities.map(el=>el[0]);
       
        const data = {
         labels,
         datasets: [
           {
             label: 'Частота',
-            data: keySkills.map(el =>el[1] ),
+            data: cities.map(el =>el[1] ),
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.7)',
           },
@@ -58,7 +58,7 @@ export const SkillsChart = ({keySkills})=>{
       };
 
     return(
-        <div className="skillsChart">
+        <div className="citiesChart">
             <Bar  data={data} options={options} />
         </div>
         

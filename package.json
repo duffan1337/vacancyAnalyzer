@@ -2,19 +2,25 @@
   "name": "vacancy_statistic",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://duffan1337.github.io/vacancyAnalyzer/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.3",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "chart.js": "^3.8.0",
     "chartjs": "^0.3.24",
     "faker": "^6.6.6",
+    "gh-pages": "^4.0.0",
     "react": "^18.1.0",
     "react-chartjs-2": "^4.3.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
-    "react-scripts": "5.0.1",
+    "react-scripts": "4.0.2",
     "redux-thunk": "^2.4.1",
     "serve": "^14.0.1",
     "web-vitals": "^2.1.0"
@@ -23,6 +29,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,5 +50,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }

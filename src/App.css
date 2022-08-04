@@ -25,7 +25,7 @@
   width: 170px;
   height: 35px;
   line-height: 15px;
-  border-radius: 45px;
+  border-radius: 5px;
   margin: 0px 10px;
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
@@ -40,9 +40,9 @@
 }
 
 .ShowDataButton:hover{
-  background: #282c34;
+  background: #dde0e7;
   box-shadow: 0 15px 20px rgba(31, 123, 132, 0.4);
-  color: white;
+  color: black;
   transform: translateY(-5px);
 }
 
@@ -51,7 +51,7 @@
     background-color: #282c34;
     font-size: calc(10px + 2vmin);
     color: white;
-     height: 100%
+    
   }
   
   .App-link {
@@ -60,32 +60,54 @@
   .Charts{
     margin-left: 100px;
     width: 100%;
-    height: 100%;
+    
     margin: 0 auto;
     display: inline-block;
   }
   .SalaryStat
   {
     margin: 0 auto;
-    
-    height:100px;
-    width:350px;
-   
     font-size: 20px;
   }
   .SalaryStat div{
     margin-top: 5px
   }
-
   .PieCharts{
-    background-color: red;
+    display:flex;
+    justify-content: center;
+    padding-bottom: 100px;
   }
-  
+
   .DiagramCharts{
-    height: 450px;
+    display:flex;
+    justify-content: center;
+    height: 100%;
     width:100%;
   }
 
+  @media screen and (min-width: 0px) and  (max-width:1655px) {
+    .DiagramCharts{
+      display: inline-block;
+    }
+  }
+
+  @media screen and (min-width: 0px) and  (max-width:810px) {
+    .PieCharts{
+      display: inline-block;
+    }
+  }
+
+  @media screen and (min-width: 0px) and  (max-width:810px) {
+    .PieCharts{
+      display: inline-block;
+    }
+  }
+  @media screen and (min-width: 1650px) and  (max-width:2250px) {
+    .DiagramCharts{
+      width: 1000px;
+      display: inline-block;
+    }
+  }
 
   
   

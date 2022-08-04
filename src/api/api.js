@@ -1,27 +1,23 @@
-import * as axios from "axios"
-import { useDebugValue } from "react"
+import axios from "axios"
 
 
 export const instance =  axios.create({
     baseURL:'https://api.hh.ru/',
-    
- 
 })
 
-
+//area=16 Belarus
 export const searchAPI={
-    getSearchId(text = "javascript") {
-        return instance.get(`vacancies?text=${text}&only_with_salary=true&per_page=5`
+    getAllVacanciesByName(text = "javascript", pages=0) {
+        return instance.get(`vacancies?text=${text}&only_with_salary=true&page=${pages}&per_page=100&area=16`
         ).then(response => response.data)
     },
-}
 
-export const getVacancyByIdAPI={
-    getCurrentVacancy(id) {
+    getVacancyById(id) {
         return instance.get(`vacancies/${id}`
         ).then(response =>response.data)
     },
 }
+
 
 export const getCurrency={
     getCurrencyValues(){

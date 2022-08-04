@@ -1,5 +1,5 @@
 import React from 'react';
-import "./experienceBySalaryChart.css"
+import "./salaryByExperienceChart.css"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +13,7 @@ import { Bar } from 'react-chartjs-2';
 
 
 
-export function ExperienceBySalaryChart({experienceBySalary}) {
+export function SalaryByExperienceChart({experienceBySalary}) {
 
   ChartJS.register(
     CategoryScale,
@@ -59,7 +59,7 @@ export function ExperienceBySalaryChart({experienceBySalary}) {
   };
 
   return (
-    <div className="experienceBySalaryChart">
+    <div className="salaryByExperienceChart">
   <Bar options={options} data={data} />
   </div>
   )

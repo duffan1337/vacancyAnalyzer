@@ -1,17 +1,17 @@
 import React from 'react';
-import './employmentChart.css'
+import './scheduleChart.css'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const EmploymentChart = ({employment})=>{ 
+export const ScheduleChart = ({schedule})=>{ 
  const data = {
   labels: ["Удаленная работа", "Полный день", "Гибкий график"],
   datasets: [
     {
       label: '# of Votes',
-      data: [employment.remote, employment.fullDay, employment.flexible],
+      data: [schedule.remote, schedule.fullDay, schedule.flexible],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -35,7 +35,7 @@ export const EmploymentChart = ({employment})=>{
 
 
   return ( 
-  <div className="employmentChart">
+  <div className="scheduleChart">
     <p>График работы</p>
     <Pie data={data} />
   </div> )

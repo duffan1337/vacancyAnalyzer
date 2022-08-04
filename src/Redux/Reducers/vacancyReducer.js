@@ -1,21 +1,24 @@
-import { getVacancyByIdAPI } from "../../api/api";
-import { addVacancyById } from "../Actions/vacancyAC";
+import { searchAPI } from "../../api/api";
+import { addAllData, addAllVacancy, addAllVacancy2, addVacancyById, addVacancyName } from "../Actions/vacancyAC";
 
 const initialState={
-    items: [],
-    openItems: [],
-    initialized:false,
+    vacancy: [],
+    detailedVacancy: [],
     isLoaded:false,
 
+    vacancyName:"",
     top10Skills:[],
-    Experience:[],
-    Employment:[],
-    ExperienceBySalary:[],
-    Salary:{ }
+    experience:[],
+    schedule:[],
+    salaryByExperience:[],
+    salaryStat:{ },
+    cities:[],
+
+    pages:0
 }
 
 const getSalaryStat = (vacancies, currencies)=>{
-  debugger
+
     let salary = getSalary(vacancies,currencies)
     let allSalary = salary.from.concat(salary.to)
 
@@ -24,14 +27,14 @@ const getSalaryStat = (vacancies, currencies)=>{
    const max = Math.max(...allSalary)
    const middle = Math.trunc(allSalary.reduce((a, b) => (a + b)) / allSalary.length);
    return {
-    max:max,
-    min:min,
-    middle:middle
+      max:max,
+      min:min,
+      middle:middle
     }
 }
 
 
-const setEmployment = (items) =>{
+const setSchedule = (items) =>{
     let arrayOfEmployment = items.map(item =>{
       return item.schedule
     })
@@ -52,7 +55,6 @@ const setEmployment = (items) =>{
         EmploymentStat= {...EmploymentStat, flexible: EmploymentStat.fullDay+=1}
       } 
     }
-    console.log("Employment stat", EmploymentStat)
     return EmploymentStat
   }
 
@@ -80,14 +82,13 @@ const setEmployment = (items) =>{
       {
         ExperienceStat= {...ExperienceStat, moreThan6: ExperienceStat.noExperience+=1}
       }
-     
     }
     return ExperienceStat
   }
 
   
 
-  const setKeySkills = (items) =>{
+  const setTop10Skills = (items) =>{
     let keySkillsStats={items:[]}
     Array.from(items, el=>Array.from(el.key_skills, (item) =>{keySkillsStats = {...keySkillsStats, items: [...keySkillsStats.items,item.name]}}))
 
@@ -109,10 +110,34 @@ const setEmployment = (items) =>{
    return top10Skills   
   }
 
+
+
+
+  const setCities = (items) =>{
+
+    let filteredCitiesArray = items.filter(el => el.address !== null && el.address.city !== null).map(el => el.address.city)
+
+    let map = filteredCitiesArray.reduce(function(prev, cur) {
+      prev[cur] = (prev[cur] || 0) + 1;
+      return prev;
+    }, {});
+
+    let sortable = [];
+    for (const count in map) {
+        sortable.push([count, map[count]]);
+    }
+    let top = sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    let top10Cities = top.slice(0,10)
+
+   return top10Cities   
+  }
   
-  const setExperienceAndSalary = (vacancyItems,currencies) =>{
+  const setSalaryByExperience = (vacancyItems,currencies) =>{
+
     let ExperienceBySalary={between1And3:[], between3And6:[],noExperience:[], moreThan6:[]}
- 
+
         for (let x in vacancyItems) {
           if(vacancyItems[x].experience.id ==="between1And3")
           {
@@ -132,23 +157,22 @@ const setEmployment = (items) =>{
           }
         }
 
-      
+    
           let between1And3 =getSalary(ExperienceBySalary.between1And3,currencies)
           let between3And6=getSalary(ExperienceBySalary.between3And6,currencies)
           let noExperience = getSalary(ExperienceBySalary.noExperience,currencies)
           let moreThan6 =getSalary(ExperienceBySalary.moreThan6,currencies)
           let AVGbetween1And3= getAvg(between1And3.from.concat(between1And3.to))
-           let AVGbetween3And6= getAvg(between3And6.from.concat(between3And6.to))
-           let AVGnoExperience= getAvg(noExperience.from.concat(noExperience.to))
-           let AVGmoreThan6= getAvg(moreThan6.from.concat(moreThan6.to))
-        
-        console.log("experience!!!!!", AVGbetween1And3, AVGbetween3And6, AVGnoExperience, AVGmoreThan6)
-        return {AVGnoExperience, AVGbetween1And3, AVGbetween3And6, AVGmoreThan6} 
-        
+          let AVGbetween3And6= getAvg(between3And6.from.concat(between3And6.to))
+          let AVGnoExperience= getAvg(noExperience.from.concat(noExperience.to))
+          let AVGmoreThan6= getAvg(moreThan6.from.concat(moreThan6.to))
+  
+        return {AVGnoExperience, AVGbetween1And3, AVGbetween3And6, AVGmoreThan6}       
   }
 
+
   const getSalary = (Vacancy,currencies) =>{
-    let arr = {
+    let HHCurrencies = {
       KZT:currencies.KZT,
       RUR:currencies.RUB,
       BYR:currencies.BYN,
@@ -156,25 +180,17 @@ const setEmployment = (items) =>{
       EUR:currencies.EUR,
       UAH:currencies.UAH,
     }  
-    console.log("arrtewegshshe",arr)
     let filterFrom = Vacancy.filter(el => el.salary.from !== null )
       let from = filterFrom.map(item => 
         {      
-          console.log("FFFFFFFFFFFFFFf", currencies)
-          debugger   
-          console.log("YYYYY",item.salary.from)
           if(item.salary.currency !== "USD")
           {
             let el;
-            debugger
-            for (var currency in arr) 
+            for (let currency in HHCurrencies) 
             {
-             debugger
-
              if(currency===item.salary.currency)
              {
-             el =Math.trunc((item.salary.from)/arr[currency])
-             console.log("ELLLLL",item.salary)
+             el =Math.trunc((item.salary.from)/HHCurrencies[currency])
              }
              
             }
@@ -192,13 +208,11 @@ const setEmployment = (items) =>{
         if(item.salary.currency !== "USD")
         {
           let el;
-          console.log("CC",currencies)
-          for (var currency in arr) 
+          for (let currency in HHCurrencies) 
           {
            if(currency===item.salary.currency)
            {
-            console.log(currency)
-           el=Math.trunc(item.salary.to / arr[currency])
+           el=Math.trunc(item.salary.to / HHCurrencies[currency])
            }
            
         }
@@ -208,8 +222,6 @@ const setEmployment = (items) =>{
       return  item.salary.to 
     }
   })
-
-  console.log("FFFFTTT",from,to)
       return {from:from, to:to}
 }
 
@@ -222,100 +234,106 @@ const setEmployment = (items) =>{
 
 
 const vacancy =  (state = initialState, action)=>{
-    debugger
-    console.log("payload", action.payload)
+  if(action.type ==="SET_VACANCY_NAME")
+  {
+      return {
+          ...state,
+          vacancyName:action.payload,
+      };
+  }
     if(action.type ==="ADD_ALL_VACANCY")
     {
-        console.log("openItems",state.openItems)
+      console.log(action.payload.pages)
         return {
             ...state,
             isLoaded:true,
-            items:action.payload.items,
-            openItems: [],
-            between1And3Experience:[],
-            between3And6Experience:[],
-            noExperience:[],
+            vacancy:action.payload.items,
+            detailedVacancy: [],
+            pages:action.payload.pages
         };
     }
-    else if(action.type ==="ADD_OPEN_VACANCY")
+    if(action.type ==="ADD_ALL_VACANCY_2")
     {
       debugger
-        console.log("openItems",state.openItems)
+      let obj = {
+        ...state,
+        vacancy:[...state.vacancy, action.payload.items],
+
+    };
+      console.log(action.payload.pages)
         return {
             ...state,
-            openItems:  [...state.openItems, action.payload],
-            initialized: state.openItems.length===state.items.length-1 ? true : false,
-             isLoaded: state.openItems.length===state.items.length-1 ? false : true
-
+            vacancy:[...state.vacancy, ...action.payload.items],
+            //detailedVacancy: [],
+            pages:action.payload.pages
         };
     }
-    else if(action.type ==="SET_TOP_SKILLS")
+    else if(action.type ==="ADD_DETAILED_VACANCY")
     {
-        return{
+        return {
             ...state,
-            top10Skills:action.payload
-        }
+            detailedVacancy:  [...state.detailedVacancy, action.payload],
+            isLoaded: state.detailedVacancy.length===state.vacancy.length-1 ? false : true
+        };
     }
-    else if(action.type ==="SET_EXPERIENCE")
-    {
-        return{
-            ...state,
-            Experience:action.payload
-        }
-    }
-    else if(action.type ==="SET_EMPLOYMENT")
-    {
-        return{
-            ...state,
-            Employment:action.payload
-        }
-    }
-    else if(action.type ==="SET_EXPERIENCE_BY_SALARY")
-    {
-        return{
-            ...state,
-            ExperienceBySalary:action.payload
-        }
-    }
-    else if(action.type ==="SET_SALARY")      //Сделать логику
-    {
-
-        return{
-            ...state,
-            Salary: getSalaryStat(action.payload)
-        }
-    }
-    else if(action.type ==="SET_ALL_DATA")      //Сделать логику
+    else if(action.type ==="SET_ALL_DATA")      
     {
       debugger
-        const items = state.openItems
-      let obj ={
-        ...state,
-        isLoaded:false,
-        Salary: getSalaryStat(items, action.payload.currencies),
-        Employment: setEmployment(items),
-        Experience: setExperience(items),
-        top10Skills: setKeySkills(items),
-        ExperienceBySalary: setExperienceAndSalary(items, action.payload.currencies)
-    }
-    debugger
-        return obj
+        const items = state.detailedVacancy
+
+        return {
+            ...state,
+            salaryStat: getSalaryStat(items, action.payload.currencies),
+            schedule: setSchedule(items),
+            experience: setExperience(items),
+            top10Skills: setTop10Skills(items),
+            salaryByExperience: setSalaryByExperience(items, action.payload.currencies),
+            cities: setCities(items),
+            isLoaded: false
+       }
     }
     return state
 }
 
 
+export const getAllVacanciesOnAllPages =(pages, vacanciesName, currencies)=>async(dispatch) => {
+debugger
 
-export const getOpenVacancies=(vacancyItems)=>async(dispatch)=>
+for(var item=1; item<pages;item++) {
+  await searchAPI.getAllVacanciesByName(vacanciesName, item).then(
+    response=>{
+      dispatch(addAllVacancy2(response))
+      dispatch(getADetailedVacancies(response))
+    })
+}
+
+// await dispatch(addAllData({currencies:currencies}))
+
+return 0;
+}
+
+//Thunk
+export const getAllVacancies = (vacanciesName,currencies)=>(dispatch)=>{   //получение всех вакансий в первначальном(неразвенутом)виде
+  dispatch(addVacancyName(vacanciesName))
+  searchAPI.getAllVacanciesByName(vacanciesName).then(
+    response=>{
+      dispatch(addAllVacancy(response))
+      dispatch(getADetailedVacancies(response))
+      dispatch(getAllVacanciesOnAllPages(response.pages, vacanciesName,currencies))
+    })
+}
+
+export const getADetailedVacancies=(vacancyItems)=>(dispatch)=>
 {
-
- const getCurrentVacancy =(message)=>(dispatch)=>{          //получает элемент, делает запрос 
-    return getVacancyByIdAPI.getCurrentVacancy(message).then((response) => {
+ const getCurrentVacancy =(id)=>(dispatch)=>{          //получает элемент, делает запрос 
+    return searchAPI.getVacancyById(id).then((response) => {
         dispatch(addVacancyById(response))
     })
   } 
-  for (const item of vacancyItems.items) {
-     await dispatch(getCurrentVacancy(item.id));
-  }
+
+  vacancyItems.items.forEach(async (element) => {  
+    await dispatch(getCurrentVacancy(element.id));
+  })
+
 }
 export default vacancy

@@ -1,25 +1,26 @@
-.experienceChart{
+.scheduleChart{
     width:400px;
     height:400px;
-    float: left;
-    margin-left: 50px;
+    float:right;
+    margin-right: 50px;
 }
-.experienceChart p{
+
+.scheduleChart p{
     font-weight:bold;
     font-size: 13px;
     color: rgb(101, 101, 101);
 }
 
 @media screen and (min-width: 0px) and  (max-width:810px) {
-    .experienceChart{
+    .scheduleChart{
      margin: 0 auto;
     }
   }
 
-
   @media screen and (min-width: 360px) and  (max-width:510px) {
-    .experienceChart{
+    .scheduleChart{
         width:300px;
         height:300px;
+        margin-top:65px;
     }
   }
