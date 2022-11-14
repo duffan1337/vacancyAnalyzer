@@ -15,7 +15,12 @@ export const searchAPI={
     getVacancyById(id) {
         return instance.get(`vacancies/${id}`
         ).then(response =>response.data)
-    },
+        .catch((error)=>
+            
+            // document.location.href = error.response.data.errors[0].captcha_url + '&backurl=' + document.location.origin
+            window.open(error.response.data.errors[0].captcha_url + '&backurl=' + document.location.origin)
+        )
+}
 }
 
 

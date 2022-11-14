@@ -22,3 +22,8 @@ export const addVacancyName = (payload)=>({
     type:'SET_VACANCY_NAME',
     payload
 })
+
+export const setCurrentPage = (payload)=>({
+    type:'SET_CURRENT_PAGE',
+    payload
+})

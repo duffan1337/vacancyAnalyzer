@@ -1,26 +1,25 @@
-.experienceChart{
-    width:400px;
-    height:400px;
-    float: left;
-    margin-left: 50px;
+.experienceChart {
+  width: 400px;
+  height: 400px;
+  float: left;
+  margin-left: 50px;
 }
-.experienceChart p{
-    font-weight:bold;
-    font-size: 13px;
-    color: rgb(101, 101, 101);
+.experienceChart p {
+  font-weight: bold;
+  font-size: 13px;
+  color: rgb(101, 101, 101);
 }
 
-@media screen and (min-width: 0px) and  (max-width:810px) {
-    .experienceChart{
-     margin: 0 auto;
-     padding-top: 70px;
-    }
+@media screen and (min-width: 0px) and (max-width: 810px) {
+  .experienceChart {
+    margin: 0 auto;
+    padding-top: 70px;
   }
+}
 
-
-  @media screen and (min-width: 360px) and  (max-width:510px) {
-    .experienceChart{
-        width:300px;
-        height:300px;
-    }
+@media screen and (min-width: 360px) and (max-width: 510px) {
+  .experienceChart {
+    width: 300px;
+    height: 300px;
   }
+}

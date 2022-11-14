@@ -11,7 +11,8 @@ import { ExperienceChart } from './Components/Charts/ExperienceChart/experienceC
 import { ScheduleChart } from './Components/Charts/ScheduleChart/scheduleChart';
 import { SalaryByExperienceChart } from './Components/Charts/SalaryByExperienceChart/salaryByExperienceChart';
 import { CitiesChart } from './Components/Charts/CitiesChart/CitiesChart';
-import { Spinner } from './Components/Spinner/spinner';
+import ProgressBar from './Components/ProgressBar/progressBar';
+import { StatBlock } from './Components/StatBlock/statBlock';
 
 
 function App() {
@@ -65,9 +66,14 @@ function App() {
     };
   });
 
-  const {pages}=useSelector((state)=>{
+  const {pageLoad}=useSelector((state)=>{
     return{
-      pages:state.vacancy.pages
+      pageLoad:state.vacancy.currentPage
+    };
+  });
+  const {allPage}=useSelector((state)=>{
+    return{
+      allPage:state.vacancy.pages
     };
   });
   
@@ -80,6 +86,8 @@ function App() {
     }))
   },[])
 
+
+
  
 
   const dispatch = useDispatch();
@@ -90,43 +98,73 @@ function App() {
   }
 
 
-  if(isLoaded)
-   {
-    return(
-      <div className="App">
-    <Spinner/>
-    </div>
-    )
-  }
-  else      
-  {
+
+  // if(isLoaded)
+  //  {
+  //   return(
+  //     <div className="App">
+  //   <Spinner/>
+  //   </div>
+  //   )
+  // }
+  // else      
+  // {
   return (
     <div className="App">
-       <Search dispatch={dispatch} getAllVacancies={getAllVacancies} currencies={currencies} />
+      <div className="app-container _container">
+
+      <header className="header">
+        <div className="header-container">
+        <Search dispatch={dispatch} getAllVacancies={getAllVacancies} currencies={currencies} />
+        </div>
+      </header>
+
       <body className="App-body">
-        <button className="ShowDataButton" onClick={handleSetClick}>Визуализировать данные</button>
-      <div className="Stat">
-        {vacancy.length!==0 ?<p>Количество вакансий по запросу "{vacancyName}": {vacancy.length}</p>:""}
-        <div className="SalaryStat">
-          <div> Минимальная зарплата: {salaryStat.min} $</div>
-          <div> Средняя зарплата: {salaryStat.middle} $</div>
-          <div> Максимальная зарплата: {salaryStat.max} $</div> 
-        </div>
-        <div className="Charts">
-          <div className="DiagramCharts">
-            <SkillsChart keySkills={top10Skills}/>
-            <SalaryByExperienceChart experienceBySalary ={salaryByExperience}/>
-              <CitiesChart cities ={cities}/>
+        <div className="App-body-container">
+            <button className="ShowDataButton" onClick={handleSetClick}>visible data</button>
+            <div className="Stat">
+              {vacancy.length!==0 ?<p>Количество вакансий по запросу "{vacancyName}": {vacancy.length}</p>:""}
+              {pageLoad !== allPage ? <ProgressBar bgcolor={"#6a1b9a"} completed={Math.trunc(pageLoad/allPage*100)}/> :""}
+
+              {/* { vacancy.length!==0 ? */}
+              <div className="SalaryStat-blocks">
+                <StatBlock statName="Количество вакансий" statElement={vacancy.length}></StatBlock>
+                <StatBlock statName="max" statElement={salaryStat.max}></StatBlock>
+                <StatBlock statName="мiddle" statElement={salaryStat.middle}></StatBlock>
+                <StatBlock statName="min" statElement={salaryStat.min}></StatBlock>
+        
+              </div>
+              {/* :""} */}
+
+            <div className="Charts">
+              <div className="Charts-wrapper">
+                <div className="DiagramCharts ">
+                  
+                  <div className="First-charts-block _chartBlock">
+                    <ExperienceChart experience={experience}/>
+                    <SkillsChart keySkills={top10Skills}/>
+                  </div>
+
+                  <div className="Second-charts-block _chartBlock">
+                    <ScheduleChart schedule={schedule}/>  
+                    <SalaryByExperienceChart experienceBySalary ={salaryByExperience}/>
+                  </div>
+
+                  <div className="Third-charts-block _chartBlock">
+                    <CitiesChart cities ={cities}/>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="PieCharts">
-            <ExperienceChart experience={experience}/>
-            <ScheduleChart schedule={schedule}/>  
-          </div>
-        </div>
       </div>
       </body>
+
+      </div>
     </div>  
   );
-}}
+}
+//}
 
 export default App;

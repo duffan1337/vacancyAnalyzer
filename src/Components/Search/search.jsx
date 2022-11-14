@@ -13,14 +13,20 @@ export const Search =({dispatch,getAllVacancies,currencies})=>{
       });
       
     return(
-        <header className="App-header">
-             <input className="searchInput" 
-         type="text"
-         value={vacanciesName}
-         placeholder="Введите название вакансии"
-         onChange={(e) => setVacanciesName(e.target.value)}></input>
-          <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(vacanciesName,currencies))
-         }}>Отправить</button>
-       </header>
+        <div className="header-wrapper">
+          <div className="left-section">
+            <input className="search-input" 
+            type="text"
+            value={vacanciesName}
+            placeholder="Enter a vacancy"
+            onChange={(e) => setVacanciesName(e.target.value)}></input>
+            <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(vacanciesName,currencies))
+            }}>Search</button>
+          </div>
+          <div className="right-section">
+            change theme
+            <img className="changeThemeimg"></img>
+          </div>
+       </div>
     )
 }

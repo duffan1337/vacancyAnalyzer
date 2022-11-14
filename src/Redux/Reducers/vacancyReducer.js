@@ -1,5 +1,5 @@
 import { searchAPI } from "../../api/api";
-import { addAllData, addAllVacancy, addAllVacancy2, addVacancyById, addVacancyName } from "../Actions/vacancyAC";
+import { addAllData, addAllVacancy, addAllVacancy2, addVacancyById, addVacancyName, setCurrentPage } from "../Actions/vacancyAC";
 
 const initialState={
     vacancy: [],
@@ -14,7 +14,8 @@ const initialState={
     salaryStat:{ },
     cities:[],
 
-    pages:0
+    currentPage:0,
+    pages:0,
 }
 
 const getSalaryStat = (vacancies, currencies)=>{
@@ -180,7 +181,7 @@ const setSchedule = (items) =>{
       EUR:currencies.EUR,
       UAH:currencies.UAH,
     }  
-    let filterFrom = Vacancy.filter(el => el.salary.from !== null )
+    let filterFrom = Vacancy.filter(el => el.salary.from !== null && el.salary.from !== 0 )
       let from = filterFrom.map(item => 
         {      
           if(item.salary.currency !== "USD")
@@ -202,7 +203,7 @@ const setSchedule = (items) =>{
       }
     })
            
-    let filterTo = Vacancy.filter(el => el.salary.to !== null )
+    let filterTo = Vacancy.filter(el => el.salary.to !== null && el.salary.to !==0 )
     let to = filterTo.map(item => 
       {         
         if(item.salary.currency !== "USD")
@@ -239,6 +240,13 @@ const vacancy =  (state = initialState, action)=>{
       return {
           ...state,
           vacancyName:action.payload,
+      };
+  }
+  if(action.type ==="SET_CURRENT_PAGE")
+  {
+      return {
+          ...state,
+          currentPage:action.payload,
       };
   }
     if(action.type ==="ADD_ALL_VACANCY")
@@ -280,31 +288,31 @@ const vacancy =  (state = initialState, action)=>{
     {
       debugger
         const items = state.detailedVacancy
-
-        return {
-            ...state,
-            salaryStat: getSalaryStat(items, action.payload.currencies),
-            schedule: setSchedule(items),
-            experience: setExperience(items),
-            top10Skills: setTop10Skills(items),
-            salaryByExperience: setSalaryByExperience(items, action.payload.currencies),
-            cities: setCities(items),
-            isLoaded: false
-       }
+        let obj = {
+          ...state,
+          salaryStat: getSalaryStat(items, action.payload.currencies),
+          schedule: setSchedule(items),
+          experience: setExperience(items),
+          top10Skills: setTop10Skills(items),
+          salaryByExperience: setSalaryByExperience(items, action.payload.currencies),
+          cities: setCities(items),
+          isLoaded: false
+     }
+        return obj
     }
     return state
 }
 
 
 export const getAllVacanciesOnAllPages =(pages, vacanciesName, currencies)=>async(dispatch) => {
-debugger
 
-for(var item=1; item<pages;item++) {
+for(var item=1; item<=pages;item++) {
   await searchAPI.getAllVacanciesByName(vacanciesName, item).then(
     response=>{
       dispatch(addAllVacancy2(response))
       dispatch(getADetailedVacancies(response))
     })
+     dispatch(setCurrentPage(item))
 }
 
 // await dispatch(addAllData({currencies:currencies}))
@@ -315,17 +323,19 @@ return 0;
 //Thunk
 export const getAllVacancies = (vacanciesName,currencies)=>(dispatch)=>{   //получение всех вакансий в первначальном(неразвенутом)виде
   dispatch(addVacancyName(vacanciesName))
-  searchAPI.getAllVacanciesByName(vacanciesName).then(
+   let responce = searchAPI.getAllVacanciesByName(vacanciesName).then(
     response=>{
       dispatch(addAllVacancy(response))
       dispatch(getADetailedVacancies(response))
       dispatch(getAllVacanciesOnAllPages(response.pages, vacanciesName,currencies))
     })
+  dispatch(addAllData(currencies))
 }
+
 
 export const getADetailedVacancies=(vacancyItems)=>(dispatch)=>
 {
- const getCurrentVacancy =(id)=>(dispatch)=>{          //получает элемент, делает запрос 
+ const getCurrentVacancy =(id)=>(dispatch)=>{                  //получает элемент, делает запрос 
     return searchAPI.getVacancyById(id).then((response) => {
         dispatch(addVacancyById(response))
     })
