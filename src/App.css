@@ -4,8 +4,7 @@
   text-align: center;
   height: 100%;
   width: 100%;
-  background-color: red;
-  background-color: #282c34;
+  background-color: #e5e5e5;
   font-family: 'Inter', sans-serif;
 }
 
@@ -15,15 +14,8 @@
   padding-top: 20px;
 }
 .header {
-  background-color: #282c34;
+  background-color: #e5e5e5;
   max-height: 100px;
-
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white; */
 }
 .App-body-container {
   padding-top: 30px;
@@ -56,6 +48,21 @@
   background: white;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
+
+  opacity: 0; /*Элемент полностью прозрачный (невидимый)*/
+  transition: 1s; /*Скорость перехода состояния элемента*/
+  animation: show 1s 1; /* Указываем название анимации, её время и количество повторов*/
+  animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
+  animation-delay: 0.5s; /* Задержка перед началом */
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .ShowDataButton:hover {
@@ -66,7 +73,7 @@
 }
 
 .App-body {
-  background-color: #282c34;
+  background-color: #e5e5e5;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -81,9 +88,22 @@
   margin: 0 auto;
   display: inline-block;
 }
+.chart-wrapper {
+}
+
+/* .chart-wrapper:not(:last-child) {
+  padding-right: 30px;
+} */
+.Third-charts-block {
+  display: flex;
+  justify-content: center;
+}
 
 ._chartBlock {
   display: flex;
+  justify-content: space-evenly;
+  padding-top: 40px;
+  align-items: center;
 }
 .SalaryStat {
   margin: 0 auto;
@@ -91,11 +111,6 @@
 }
 .SalaryStat div {
   margin-top: 5px;
-}
-.PieCharts {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 100px;
 }
 
 .DiagramCharts {
@@ -106,7 +121,7 @@
   width: 100%;
 }
 
-@media screen and (min-width: 0px) and (max-width: 1655px) {
+/* @media screen and (min-width: 0px) and (max-width: 1655px) {
   .DiagramCharts {
     display: inline-block;
   }
@@ -129,7 +144,7 @@
 
 @media screen and (min-width: 1650px) and (max-width: 2250px) {
   .DiagramCharts {
-    width: 1000px;
-    display: inline-block;
+     width: 1000px;
+    display: inline-block; 
   }
-}
+} */

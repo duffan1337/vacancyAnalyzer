@@ -1,4 +1,4 @@
-import * as React from 'react';
+ import * as React from 'react';
 import './App.css'
 import { getCurrency} from './api/api';
 import { useDispatch,useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import { SalaryByExperienceChart } from './Components/Charts/SalaryByExperienceC
 import { CitiesChart } from './Components/Charts/CitiesChart/CitiesChart';
 import ProgressBar from './Components/ProgressBar/progressBar';
 import { StatBlock } from './Components/StatBlock/statBlock';
+import { useEffect } from 'react';
 
 
 function App() {
@@ -76,6 +77,14 @@ function App() {
       allPage:state.vacancy.pages
     };
   });
+  const {allDataLoaded}=useSelector((state)=>{
+    return{
+      allDataLoaded:state.vacancy.allDataLoaded
+    };
+  });
+
+  
+
   
 
   
@@ -110,61 +119,77 @@ function App() {
   // else      
   // {
   return (
-    <div className="App">
-      <div className="app-container _container">
+    <body className="App-body">
+      <div className="App">
+        <div className="app-container _container">
 
-      <header className="header">
-        <div className="header-container">
-        <Search dispatch={dispatch} getAllVacancies={getAllVacancies} currencies={currencies} />
-        </div>
-      </header>
+          <header className="header">
+            <div className="header-container">
+            <Search dispatch={dispatch} getAllVacancies={getAllVacancies} currencies={currencies} />
+            </div>
+          </header>
 
-      <body className="App-body">
-        <div className="App-body-container">
-            <button className="ShowDataButton" onClick={handleSetClick}>visible data</button>
-            <div className="Stat">
-              {vacancy.length!==0 ?<p>Количество вакансий по запросу "{vacancyName}": {vacancy.length}</p>:""}
-              {pageLoad !== allPage ? <ProgressBar bgcolor={"#6a1b9a"} completed={Math.trunc(pageLoad/allPage*100)}/> :""}
+          <div className="App-body-container">
+          {pageLoad !== allPage ? <ProgressBar bgcolor={"#6a1b9a"} completed={Math.trunc(pageLoad/(allPage-1)*100)}/> :""}
+              {pageLoad ? <button className="ShowDataButton" onClick={handleSetClick}>visible data</button> :""}
+              <div className="Stat">
+                {vacancy.length!==0 ?<p>Количество вакансий по запросу "{vacancyName}": {vacancy.length}</p>:""}
+               
 
-              {/* { vacancy.length!==0 ? */}
-              <div className="SalaryStat-blocks">
-                <StatBlock statName="Количество вакансий" statElement={vacancy.length}></StatBlock>
-                <StatBlock statName="max" statElement={salaryStat.max}></StatBlock>
-                <StatBlock statName="мiddle" statElement={salaryStat.middle}></StatBlock>
-                <StatBlock statName="min" statElement={salaryStat.min}></StatBlock>
-        
+                {/* { vacancy.length!==0 ? */}
+                <div className="SalaryStat-blocks">
+                  <StatBlock isVisible={allDataLoaded} statName="Количество вакансий" statElement={vacancy.length}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="max" statElement={salaryStat.max} icon={"$"}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="мiddle" statElement={salaryStat.middle} icon={"$"}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="min" statElement={salaryStat.min} icon={"$"}></StatBlock>
+                </div>
+                {/* :""} */}
               </div>
-              {/* :""} */}
 
-            <div className="Charts">
-              <div className="Charts-wrapper">
-                <div className="DiagramCharts ">
-                  
-                  <div className="First-charts-block _chartBlock">
-                    <ExperienceChart experience={experience}/>
-                    <SkillsChart keySkills={top10Skills}/>
+              <div className="Charts">
+                <div className="Charts-wrapper">
+                  <div className="DiagramCharts ">
+                    
+                    <div className="First-charts-block _chartBlock">
+                      <div className="chart-wrapper">
+                       <ExperienceChart  experience={experience}/>
+                      </div>
+                      <div className="chart-wrapper">
+                        <SkillsChart keySkills={top10Skills}/>
+                      </div>
+                    </div>
+
+                    <div className="Second-charts-block _chartBlock">
+                      <div className="chart-wrapper">
+                       <ScheduleChart schedule={schedule}/>  
+                      </div>
+                      <div className="chart-wrapper">
+                        <SalaryByExperienceChart experienceBySalary ={salaryByExperience}/>
+                      </div>
+                    </div>
+
+                    <div className="Third-charts-block _chartBlock">
+                      <div className="chart-wrapper">
+                        <CitiesChart cities ={cities}/>
+                      </div>
+                    </div>
+
                   </div>
-
-                  <div className="Second-charts-block _chartBlock">
-                    <ScheduleChart schedule={schedule}/>  
-                    <SalaryByExperienceChart experienceBySalary ={salaryByExperience}/>
-                  </div>
-
-                  <div className="Third-charts-block _chartBlock">
-                    <CitiesChart cities ={cities}/>
-                  </div>
-
                 </div>
               </div>
-            </div>
+           
           </div>
-      </div>
-      </body>
-
-      </div>
-    </div>  
+        </div>
+      </div>  
+    </body>
   );
 }
 //}
 
-export default App;
+export default App
+
+// const App=()=>{
+// return <h1>hui</h1>
+// }
+
+// export default App

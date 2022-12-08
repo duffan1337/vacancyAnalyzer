@@ -2,6 +2,7 @@ import * as React from 'react';
 import './search.css'
 import { useState } from "react";
 import { useSelector } from 'react-redux';
+import CheckThemeBox from '../CheckTheme/checkThemeBox';
 
 export const Search =({dispatch,getAllVacancies,currencies})=>{
 
@@ -24,7 +25,7 @@ export const Search =({dispatch,getAllVacancies,currencies})=>{
             }}>Search</button>
           </div>
           <div className="right-section">
-            change theme
+            <CheckThemeBox></CheckThemeBox>
             <img className="changeThemeimg"></img>
           </div>
        </div>

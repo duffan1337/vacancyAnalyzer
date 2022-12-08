@@ -1,27 +1,29 @@
-.scheduleChart{
-    width:400px;
-    height:400px;
-    float:right;
-    margin-right: 50px;
+.scheduleChart {
+  max-width: 400px;
+  max-height: 100%;
+
+  background-color: white;
+  box-shadow: 0px 10px 13px rgba(17, 38, 146, 0.05);
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.scheduleChart p{
-    font-weight:bold;
-    font-size: 13px;
-    color: rgb(101, 101, 101);
+.scheduleChart p {
+  font-weight: bold;
+  font-size: 13px;
+  color: rgb(101, 101, 101);
 }
 
-@media screen and (min-width: 0px) and  (max-width:810px) {
-    .scheduleChart{
-     margin: 0 auto;
-     
-    }
+@media screen and (min-width: 0px) and (max-width: 810px) {
+  .scheduleChart {
+    margin: 0 auto;
   }
+}
 
-  @media screen and (min-width: 360px) and  (max-width:510px) {
-    .scheduleChart{
-        width:300px;
-        height:300px;
-        margin-top:65px;
-    }
+@media screen and (min-width: 360px) and (max-width: 510px) {
+  .scheduleChart {
+    width: 300px;
+    height: 300px;
+    margin-top: 65px;
   }
+}

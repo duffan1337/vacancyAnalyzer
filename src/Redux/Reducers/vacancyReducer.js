@@ -16,6 +16,7 @@ const initialState={
 
     currentPage:0,
     pages:0,
+    allDataLoaded:false
 }
 
 const getSalaryStat = (vacancies, currencies)=>{
@@ -296,7 +297,8 @@ const vacancy =  (state = initialState, action)=>{
           top10Skills: setTop10Skills(items),
           salaryByExperience: setSalaryByExperience(items, action.payload.currencies),
           cities: setCities(items),
-          isLoaded: false
+          isLoaded: false,
+          allDataLoaded:true
      }
         return obj
     }

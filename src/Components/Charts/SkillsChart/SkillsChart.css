@@ -1,27 +1,29 @@
-.skillsChart{
-    width:750px;
-    height:400px;
-    /* float:left; */
+.skillsChart {
+  width: 750px;
+  max-height: 90%;
+  /* float:left; */
+  background-color: white;
+  box-shadow: 0px 10px 13px rgba(17, 38, 146, 0.05);
+  border-radius: 8px;
+  padding: 20px;
 }
 
-@media screen and (min-width: 0px) and  (max-width:1655px) {
-    .skillsChart{
-      
-      margin: 0 auto;
-    }
+@media screen and (min-width: 0px) and (max-width: 1655px) {
+  .skillsChart {
+    margin: 0 auto;
   }
+}
 
-  @media screen and (min-width: 0px) and  (max-width:760px) {
-    .skillsChart{
-        width:500px;
-        height:300px;
-    }
+@media screen and (min-width: 0px) and (max-width: 760px) {
+  .skillsChart {
+    width: 500px;
+    height: 300px;
   }
+}
 
-  @media screen and (min-width: 360px) and  (max-width:510px) {
-    .skillsChart{
-        width:370px;
-        height:250px;
-    }
+@media screen and (min-width: 360px) and (max-width: 510px) {
+  .skillsChart {
+    width: 370px;
+    height: 250px;
   }
-  
+}

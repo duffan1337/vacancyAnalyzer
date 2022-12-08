@@ -58,16 +58,17 @@ export const CitiesChart = ({cities})=>{
       };
 
     return(
+      <div className="citiesChart-wrapper">
         <div className="citiesChart">
-            <Bar  data={data} options={options} />
+            <Bar data={data} options={options} />
         </div>
-        
+      </div>
     )
 
 }
 
 
 
-let canvas = document.querySelector(".scene");
-var context = canvas.getContext('2d');
-context.clearRect(0,0, canvas.width, canvas.height);
+// let canvas = document.querySelector(".scene");
+// var context = canvas.getContext('2d');
+// context.clearRect(0,0, canvas.width, canvas.height);
