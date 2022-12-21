@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { useState } from 'react';
 import './checkThemeBox.css'
+
 const CheckThemeBox = (props) => {
 
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(true);
 
-  const th={
-  
+  const themeHandler = () =>{
+    debugger
+    setTheme(!theme)
   }
   
     return (
       <div >
-        <label class="checkbox-green">
-            <input type="checkbox"/>
-            <span onclick={setTheme} class="checkbox-green-switch" data-label-on="" data-label-off=""></span>
+        <label class="theme-container">
+            <button onClick={themeHandler} class={theme? "theme light" : "theme dark"} data-label-on="" data-label-off="">{theme ?"light" : "dark"}</button>
         </label>
       </div>
     );

@@ -4,7 +4,7 @@ import { getCurrency} from './api/api';
 import { useDispatch,useSelector } from 'react-redux';
 import {addAllData} from './Redux/Actions/vacancyAC';
 import { useState } from 'react';
-import { getAllVacancies, getAllVacanciesOnAllPages} from './Redux/Reducers/vacancyReducer';
+import { getAllVacancies} from './Redux/Reducers/vacancyReducer';
 import { Search } from './Components/Search/search';
 import { SkillsChart } from './Components/Charts/SkillsChart/skillsChart';
 import { ExperienceChart } from './Components/Charts/ExperienceChart/experienceChart';
@@ -13,7 +13,7 @@ import { SalaryByExperienceChart } from './Components/Charts/SalaryByExperienceC
 import { CitiesChart } from './Components/Charts/CitiesChart/CitiesChart';
 import ProgressBar from './Components/ProgressBar/progressBar';
 import { StatBlock } from './Components/StatBlock/statBlock';
-import { useEffect } from 'react';
+
 
 
 function App() {
@@ -56,11 +56,6 @@ function App() {
       cities:state.vacancy.cities
     };
   });
-  const {isLoaded}=useSelector((state)=>{
-    return{
-      isLoaded:state.vacancy.isLoaded
-    };
-  });
   const {vacancyName}=useSelector((state)=>{
     return{
       vacancyName:state.vacancy.vacancyName
@@ -84,20 +79,12 @@ function App() {
   });
 
   
-
-  
-
-  
-  console.log(vacancy.length)
   React.useEffect(()=>{
     ( getCurrency.getCurrencyValues().then(response =>{ 
       setCurrencies(response.conversion_rates)
     }))
   },[])
 
-
-
- 
 
   const dispatch = useDispatch();
   const [currencies, setCurrencies] = useState({});
@@ -107,17 +94,6 @@ function App() {
   }
 
 
-
-  // if(isLoaded)
-  //  {
-  //   return(
-  //     <div className="App">
-  //   <Spinner/>
-  //   </div>
-  //   )
-  // }
-  // else      
-  // {
   return (
     <body className="App-body">
       <div className="App">
@@ -173,11 +149,9 @@ function App() {
                         <CitiesChart cities ={cities}/>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
-           
           </div>
         </div>
       </div>  

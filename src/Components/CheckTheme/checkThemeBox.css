@@ -1,23 +1,35 @@
-.checkbox-green {
+.theme{
   display: inline-block;
   height: 28px;
-  line-height: 28px;
+  width: 80px;
+  border: none;
   margin-right: 10px;
   position: relative;
   vertical-align: middle;
   font-size: 14px;
-  user-select: none;
-}
-.checkbox-green .checkbox-green-switch {
-  display: inline-block;
-  height: 28px;
-  width: 90px;
-  box-sizing: border-box;
-  position: relative;
-  border-radius: 2px;
-  background: black;
+  border-radius: 10px;
   transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
+
 }
+
+.theme:active{
+  transform-origin: bottom; 
+  transform: rotateX(-22deg);
+}
+
+.light{
+  color: white;
+  background: black;
+}
+
+
+
+.dark{
+  color: black;
+  background: white;
+}
+
+/* 
 .checkbox-green .checkbox-green-switch:before {
   content: attr(data-label-on);
   display: inline-block;
@@ -46,6 +58,7 @@
   text-transform: uppercase;
   text-align: center;
   background: white;
+
   line-height: 26px;
   font-size: 10px;
   color: #777;
@@ -73,7 +86,7 @@
   transform: translate3d(44px, 0, 0);
 }
 
-/* Hover */
+Hover */
 .checkbox-green
   input[type='checkbox']:not(:disabled)
   + .checkbox-green-switch:hover {
