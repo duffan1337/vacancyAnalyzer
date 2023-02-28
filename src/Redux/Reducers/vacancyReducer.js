@@ -53,8 +53,8 @@ const setSchedule = (items) =>{
         EmploymentStat= {...EmploymentStat, fullDay: EmploymentStat.fullDay+=1}
       } 
       else if(arrayOfEmployment[x].id ==="flexible")
-      {
-        EmploymentStat= {...EmploymentStat, flexible: EmploymentStat.fullDay+=1}
+      { 
+        EmploymentStat= {...EmploymentStat, flexible: EmploymentStat.flexible+=1}
       } 
     }
     return EmploymentStat

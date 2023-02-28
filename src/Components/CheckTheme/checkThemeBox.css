@@ -8,7 +8,7 @@
   vertical-align: middle;
   font-size: 14px;
   border-radius: 10px;
-  transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
+  transition: background-color 0.3s gicubic-bezier(0, 1, 0.5, 1);
 
 }
 

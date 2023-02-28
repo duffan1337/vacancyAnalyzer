@@ -1,6 +1,9 @@
 module.exports = {
     entry: './entry.ts',
     // ... rest
+    output: {
+      hashFunction: "xxhash64"
+  },
     resolve: {
       // 👇️ Add `.ts` and `.tsx` as a resolvable extension.
       extensions: [".ts", ".tsx", ".js"]
