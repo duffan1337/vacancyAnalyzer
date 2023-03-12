@@ -13,8 +13,8 @@ const CheckThemeBox = (props) => {
   
     return (
       <div >
-        <label class="theme-container">
-            <button onClick={themeHandler} class={theme? "theme light" : "theme dark"} data-label-on="" data-label-off="">{theme ?"light" : "dark"}</button>
+        <label className="theme-container">
+            <button onClick={themeHandler} className={theme? "theme light" : "theme dark"} data-label-on="" data-label-off="">{theme ?"light" : "dark"}</button>
         </label>
       </div>
     );

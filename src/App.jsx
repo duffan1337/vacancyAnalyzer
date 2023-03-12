@@ -98,7 +98,6 @@ function App() {
     <body className="App-body">
       <div className="App">
         <div className="app-container _container">
-
           <header className="header">
             <div className="header-container">
             <Search dispatch={dispatch} getAllVacancies={getAllVacancies} currencies={currencies} />
@@ -115,9 +114,9 @@ function App() {
                 {/* { vacancy.length!==0 ? */}
                 <div className="SalaryStat-blocks">
                   <StatBlock isVisible={allDataLoaded} statName="Количество вакансий" statElement={vacancy.length}></StatBlock>
-                  <StatBlock isVisible={allDataLoaded} statName="max" statElement={salaryStat.max} icon={"$"}></StatBlock>
-                  <StatBlock isVisible={allDataLoaded} statName="мiddle" statElement={salaryStat.middle} icon={"$"}></StatBlock>
-                  <StatBlock isVisible={allDataLoaded} statName="min" statElement={salaryStat.min} icon={"$"}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="Максимальная З/П" statElement={salaryStat.max} icon={"$"}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="Средняя З/П" statElement={salaryStat.middle} icon={"$"}></StatBlock>
+                  <StatBlock isVisible={allDataLoaded} statName="Минимальная З/П" statElement={salaryStat.min} icon={"$"}></StatBlock>
                 </div>
                 {/* :""} */}
               </div>

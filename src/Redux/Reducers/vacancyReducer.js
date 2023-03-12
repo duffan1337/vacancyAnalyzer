@@ -21,8 +21,8 @@ const initialState={
 
 const getSalaryStat = (vacancies, currencies)=>{
 
-    let salary = getSalary(vacancies,currencies)
-    let allSalary = salary.from.concat(salary.to)
+  let salary = getSalary(vacancies,currencies)
+  let allSalary = salary.from.concat(salary.to)
 
 
    const min = Math.min(...allSalary)
@@ -174,6 +174,7 @@ const setSchedule = (items) =>{
 
 
   const getSalary = (Vacancy,currencies) =>{
+    console.log(currencies)
     let HHCurrencies = {
       KZT:currencies.KZT,
       RUR:currencies.RUB,
@@ -325,13 +326,13 @@ return 0;
 //Thunk
 export const getAllVacancies = (vacanciesName,currencies)=>(dispatch)=>{   //получение всех вакансий в первначальном(неразвенутом)виде
   dispatch(addVacancyName(vacanciesName))
-   let responce = searchAPI.getAllVacanciesByName(vacanciesName).then(
+   searchAPI.getAllVacanciesByName(vacanciesName).then(
     response=>{
       dispatch(addAllVacancy(response))
       dispatch(getADetailedVacancies(response))
       dispatch(getAllVacanciesOnAllPages(response.pages, vacanciesName,currencies))
     })
-  dispatch(addAllData(currencies))
+ 
 }
 
 

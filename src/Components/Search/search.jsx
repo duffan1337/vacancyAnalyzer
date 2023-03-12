@@ -19,7 +19,7 @@ export const Search =({dispatch,getAllVacancies,currencies})=>{
             <input className="search-input" 
             type="text"
             value={vacanciesName}
-            placeholder="Enter a vacancy"
+            placeholder="Введите название вакансии"
             onChange={(e) => setVacanciesName(e.target.value)}></input>
             <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(vacanciesName,currencies))
             }}>Search</button>
