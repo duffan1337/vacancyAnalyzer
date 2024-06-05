@@ -1,22 +1,29 @@
 {
   "files": {
-    "main.css": "/vacancyAnalyzer/static/css/main.79ca74d9.chunk.css",
-    "main.js": "/vacancyAnalyzer/static/js/main.dc695eb4.chunk.js",
-    "main.js.map": "/vacancyAnalyzer/static/js/main.dc695eb4.chunk.js.map",
-    "runtime-main.js": "/vacancyAnalyzer/static/js/runtime-main.df433340.js",
-    "runtime-main.js.map": "/vacancyAnalyzer/static/js/runtime-main.df433340.js.map",
-    "static/js/2.33efd36b.chunk.js": "/vacancyAnalyzer/static/js/2.33efd36b.chunk.js",
-    "static/js/2.33efd36b.chunk.js.map": "/vacancyAnalyzer/static/js/2.33efd36b.chunk.js.map",
-    "static/js/3.fffaf87a.chunk.js": "/vacancyAnalyzer/static/js/3.fffaf87a.chunk.js",
-    "static/js/3.fffaf87a.chunk.js.map": "/vacancyAnalyzer/static/js/3.fffaf87a.chunk.js.map",
+    "main.css": "/vacancyAnalyzer/static/css/main.af92ab46.chunk.css",
+    "main.js": "/vacancyAnalyzer/static/js/main.4459fe89.chunk.js",
+    "main.js.map": "/vacancyAnalyzer/static/js/main.4459fe89.chunk.js.map",
+    "runtime-main.js": "/vacancyAnalyzer/static/js/runtime-main.6e58c2d2.js",
+    "runtime-main.js.map": "/vacancyAnalyzer/static/js/runtime-main.6e58c2d2.js.map",
+    "static/js/2.e6e2e5c2.chunk.js": "/vacancyAnalyzer/static/js/2.e6e2e5c2.chunk.js",
+    "static/js/2.e6e2e5c2.chunk.js.map": "/vacancyAnalyzer/static/js/2.e6e2e5c2.chunk.js.map",
+    "static/js/3.a30dbf0d.chunk.js": "/vacancyAnalyzer/static/js/3.a30dbf0d.chunk.js",
+    "static/js/3.a30dbf0d.chunk.js.map": "/vacancyAnalyzer/static/js/3.a30dbf0d.chunk.js.map",
+    "static/js/4.e2c7cfff.chunk.js": "/vacancyAnalyzer/static/js/4.e2c7cfff.chunk.js",
+    "static/js/4.e2c7cfff.chunk.js.map": "/vacancyAnalyzer/static/js/4.e2c7cfff.chunk.js.map",
+    "static/js/5.b5f4dd95.chunk.js": "/vacancyAnalyzer/static/js/5.b5f4dd95.chunk.js",
+    "static/js/5.b5f4dd95.chunk.js.map": "/vacancyAnalyzer/static/js/5.b5f4dd95.chunk.js.map",
     "index.html": "/vacancyAnalyzer/index.html",
-    "static/css/main.79ca74d9.chunk.css.map": "/vacancyAnalyzer/static/css/main.79ca74d9.chunk.css.map",
-    "static/js/2.33efd36b.chunk.js.LICENSE.txt": "/vacancyAnalyzer/static/js/2.33efd36b.chunk.js.LICENSE.txt"
+    "static/css/main.af92ab46.chunk.css.map": "/vacancyAnalyzer/static/css/main.af92ab46.chunk.css.map",
+    "static/js/2.e6e2e5c2.chunk.js.LICENSE.txt": "/vacancyAnalyzer/static/js/2.e6e2e5c2.chunk.js.LICENSE.txt",
+    "static/js/3.a30dbf0d.chunk.js.LICENSE.txt": "/vacancyAnalyzer/static/js/3.a30dbf0d.chunk.js.LICENSE.txt",
+    "static/js/4.e2c7cfff.chunk.js.LICENSE.txt": "/vacancyAnalyzer/static/js/4.e2c7cfff.chunk.js.LICENSE.txt",
+    "static/media/search.css": "/vacancyAnalyzer/static/media/search_lupa.44144c63.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.df433340.js",
-    "static/js/2.33efd36b.chunk.js",
-    "static/css/main.79ca74d9.chunk.css",
-    "static/js/main.dc695eb4.chunk.js"
+    "static/js/runtime-main.6e58c2d2.js",
+    "static/js/3.a30dbf0d.chunk.js",
+    "static/css/main.af92ab46.chunk.css",
+    "static/js/main.4459fe89.chunk.js"
   ]
 }
