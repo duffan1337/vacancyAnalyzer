@@ -1,40 +1,39 @@
-.header-wrapper {
-  max-width: 1600px;
+.search__wrapper {
   display: flex;
-  justify-content: space-between;
 }
 
-.search-input {
-  width: 300px;
+.search__input {
+  min-width: 100%;
   height: 35px;
   outline: none;
-  background-color: white;
-  border: 1px solid #e9ecef;
-  border-radius: 4px;
+  background:  #B5B7B9 url('../../assets/search_lupa.svg') no-repeat 10px center;
+  border: 1px solid #B5B7B9;
+  border-radius: 20px;
   font-size: 16px;
   line-height: 175%;
-  padding: 4px 16px;
+  padding: 4px 16px 4px 40px; /* Adjust padding to accommodate the icon */
+  background-size: 20px 20px; /* Adjust size as needed */
+  pointer-events: auto;
 }
 
 .sendButton {
-  text-decoration: none;
-  display: inline-block;
-  width: 100px;
-  height: 30px;
+  cursor: pointer;
+  width: 90px;
+  height: 35px;
+  background-color: rgba(11, 99, 246, 1);
+  color: white;
   border-radius: 5px;
-  margin: 10px 10px;
-  font-size: 10px;
-  text-transform: uppercase;
-  text-align: center;
-  letter-spacing: 3px;
-  color: #524f4e;
-  background: white;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
+  border: none;
+  box-shadow: 0 5px 15px 0 rgba(11, 99, 246, 1);
+  transition: 0.5s;
+  margin-right: 20px;
+  margin-top: 4px;
+  transition: background-color 0.5s; /* Плавное изменение цвета фона при наведении */
+  transition: transform 0.5s; /* Плавное изменение цвета фона при наведении */
 }
+
 .sendButton:hover {
-  background: #dde0e7;
-  box-shadow: 0 15px 20px rgba(31, 123, 132, 0.4);
-  color: black;
-  transform: translateY(-5px);
+  transform: translate(0,-3px);
+  box-shadow: 0 20px 40px 0 rgb(55, 128, 255);
 }
+

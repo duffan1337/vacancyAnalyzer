@@ -1,32 +1,22 @@
 import * as React from 'react';
 import './search.css'
 import { useState } from "react";
-import { useSelector } from 'react-redux';
-import CheckThemeBox from '../CheckTheme/checkThemeBox';
 
-export const Search =({dispatch,getAllVacancies,currencies})=>{
-
+export const Search =({dispatch,getAllVacancies,currencies,region})=>{
     const [vacanciesName, setVacanciesName] = useState("");
-    const {vacancyName}=useSelector((state)=>{
-        return{
-          vacancyName:state.vacancy.vacancyName
-        };
-      });
-      
     return(
-        <div className="header-wrapper">
-          <div className="left-section">
-            <input className="search-input" 
-            type="text"
-            value={vacanciesName}
-            placeholder="Введите название вакансии"
-            onChange={(e) => setVacanciesName(e.target.value)}></input>
-            <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(vacanciesName,currencies))
-            }}>Search</button>
+        <div className="search__wrapper">
+          <div className='search__send'>
+            <button className="sendButton" onClick={()=>{dispatch(getAllVacancies(vacanciesName,currencies,region))
+              }}>Поиск</button>
           </div>
-          <div className="right-section">
-            <CheckThemeBox></CheckThemeBox>
-            <img className="changeThemeimg"></img>
+          <div className="search">
+            <input className="search__input" 
+              type="text"
+              value={vacanciesName}
+              placeholder="Введите название вакансии"
+              onChange={(e) => setVacanciesName(e.target.value)}>
+            </input>
           </div>
        </div>
     )
